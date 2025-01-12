@@ -6,32 +6,60 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
+    interface AppBody {
+    }
     interface AppRoot {
+    }
+    interface AppTopBar {
+        "title": string;
     }
 }
 declare global {
+    interface HTMLAppBodyElement extends Components.AppBody, HTMLStencilElement {
+    }
+    var HTMLAppBodyElement: {
+        prototype: HTMLAppBodyElement;
+        new (): HTMLAppBodyElement;
+    };
     interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {
     }
     var HTMLAppRootElement: {
         prototype: HTMLAppRootElement;
         new (): HTMLAppRootElement;
     };
+    interface HTMLAppTopBarElement extends Components.AppTopBar, HTMLStencilElement {
+    }
+    var HTMLAppTopBarElement: {
+        prototype: HTMLAppTopBarElement;
+        new (): HTMLAppTopBarElement;
+    };
     interface HTMLElementTagNameMap {
+        "app-body": HTMLAppBodyElement;
         "app-root": HTMLAppRootElement;
+        "app-top-bar": HTMLAppTopBarElement;
     }
 }
 declare namespace LocalJSX {
+    interface AppBody {
+    }
     interface AppRoot {
     }
+    interface AppTopBar {
+        "title"?: string;
+    }
     interface IntrinsicElements {
+        "app-body": AppBody;
         "app-root": AppRoot;
+        "app-top-bar": AppTopBar;
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "app-body": LocalJSX.AppBody & JSXBase.HTMLAttributes<HTMLAppBodyElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
+            "app-top-bar": LocalJSX.AppTopBar & JSXBase.HTMLAttributes<HTMLAppTopBarElement>;
         }
     }
 }

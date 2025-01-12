@@ -1,10 +1,15 @@
 import { Component, h } from '@stencil/core';
 
+const HEADER_TITLE: string = 'French Bot';
+
 @Component({
     tag: 'app-root'
 })
 export class AppRoot {
     render() {
-        return <h1>French Bot</h1>
+        return [
+            <app-top-bar title={HEADER_TITLE} />,
+            <app-body />
+        ]
     }
 }
