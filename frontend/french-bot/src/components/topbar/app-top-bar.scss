@@ -1,5 +1,13 @@
+@import '../../assets/styles/global.scss';
+
 app-top-bar {
     width: 100vw;
-    background-color: blue;
+    padding: 1rem 2rem;
+    background-color: $top-bar-color;
     position: absolute;
+}
+
+app-top-bar > h1 {
+    font-size: 30px;
+    opacity: 0.5;
 }
