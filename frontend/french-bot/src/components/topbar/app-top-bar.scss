@@ -1,13 +1,13 @@
 @import '../../assets/styles/global.scss';
 
-app-top-bar {
-    width: 100vw;
-    padding: 1rem 2rem;
-    background-color: $top-bar-color;
-    position: absolute;
+app-top-bar > div {
+  width: 100%;
+  padding: 1rem 2rem;
+  background-color: $top-bar-color;
 }
 
-app-top-bar > h1 {
-    font-size: 30px;
-    opacity: 0.5;
+app-top-bar h1 {
+  opacity: 0.5;
+  margin: 0;
+  font-size: 2rem;
 }

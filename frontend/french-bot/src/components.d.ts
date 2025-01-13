@@ -8,6 +8,10 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface AppBody {
     }
+    interface AppBotResponse {
+    }
+    interface AppInputField {
+    }
     interface AppRoot {
     }
     interface AppTopBar {
@@ -20,6 +24,18 @@ declare global {
     var HTMLAppBodyElement: {
         prototype: HTMLAppBodyElement;
         new (): HTMLAppBodyElement;
+    };
+    interface HTMLAppBotResponseElement extends Components.AppBotResponse, HTMLStencilElement {
+    }
+    var HTMLAppBotResponseElement: {
+        prototype: HTMLAppBotResponseElement;
+        new (): HTMLAppBotResponseElement;
+    };
+    interface HTMLAppInputFieldElement extends Components.AppInputField, HTMLStencilElement {
+    }
+    var HTMLAppInputFieldElement: {
+        prototype: HTMLAppInputFieldElement;
+        new (): HTMLAppInputFieldElement;
     };
     interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {
     }
@@ -35,12 +51,18 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "app-body": HTMLAppBodyElement;
+        "app-bot-response": HTMLAppBotResponseElement;
+        "app-input-field": HTMLAppInputFieldElement;
         "app-root": HTMLAppRootElement;
         "app-top-bar": HTMLAppTopBarElement;
     }
 }
 declare namespace LocalJSX {
     interface AppBody {
+    }
+    interface AppBotResponse {
+    }
+    interface AppInputField {
     }
     interface AppRoot {
     }
@@ -49,6 +71,8 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "app-body": AppBody;
+        "app-bot-response": AppBotResponse;
+        "app-input-field": AppInputField;
         "app-root": AppRoot;
         "app-top-bar": AppTopBar;
     }
@@ -58,6 +82,8 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "app-body": LocalJSX.AppBody & JSXBase.HTMLAttributes<HTMLAppBodyElement>;
+            "app-bot-response": LocalJSX.AppBotResponse & JSXBase.HTMLAttributes<HTMLAppBotResponseElement>;
+            "app-input-field": LocalJSX.AppInputField & JSXBase.HTMLAttributes<HTMLAppInputFieldElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
             "app-top-bar": LocalJSX.AppTopBar & JSXBase.HTMLAttributes<HTMLAppTopBarElement>;
         }
