@@ -1,15 +1,20 @@
-import { Component, h } from '@stencil/core';
+import { Component, Event, EventEmitter, h } from '@stencil/core';
 
 @Component({
   tag: 'app-input-field',
   styleUrl: 'input-field.scss',
 })
 export class AppInputField {
+  /**
+   * Emitted when a response to the query is received from the server
+   */
+  @Event()
+  public response: EventEmitter<string>;
+
   render() {
     return (
       <div>
         <form onSubmit={this.onSubmit}>
-          <label htmlFor="text">First name:</label>
           <input type="text" id="text" name="text" />
           <br />
           <input type="submit" value="Submit" />
@@ -27,7 +32,13 @@ export class AppInputField {
     const text: string = inputEl.value;
     inputEl.value = '';
 
-    await this.makeRequest(text);
+    const response: string | void = await this.makeRequest(text);
+
+    if (!response) {
+      return;
+    }
+
+    this.response.emit(response)
   };
 
   private async makeRequest(text: string): Promise<string | void> {
