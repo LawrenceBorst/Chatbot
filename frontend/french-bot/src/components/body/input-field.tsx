@@ -31,7 +31,7 @@ export class AppInputField {
   };
 
   private async makeRequest(text: string): Promise<string | void> {
-    const url = `http://127.0.0.1:5000/process-input?text=${text}`;
+    const url = `http://127.0.0.1:8000/process-input?text=${text}`;
 
     return fetch(url)
       .then((response: Response) => {
