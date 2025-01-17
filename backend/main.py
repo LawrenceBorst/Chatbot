@@ -1,25 +1,29 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+import os
+import click
+from app import create_app, db
+from flask_migrate import Migrate
+from flask import Flask
+import unittest
 
-app = Flask(__name__)
-CORS(app)
-
-
-@app.route("/")
-def index():
-    return "<h1>Hello World</h1>"
-
-
-@app.route("/process-input", methods=["GET"])
-def process_input():
-    text: str = request.args.get("text")
-    if not text:
-        return 400
-
-    return jsonify("Hello World")
+app: Flask = create_app(os.getenv("FLASK_CONFIG") or "default")
+migrate: Migrate = Migrate(app, db)
 
 
-if __name__ == "__main__":
-    app.run(port=8000, debug=True)
+@app.shell_context_processor
+def make_shell_context() -> dict:
+    """
+    This function is used to add additional context to the Flask shell.
+    """
+    return dict(db=db)
 
-app.add_url_rule("/", "index", index)
+
+@app.cli.command()
+@click.argument("test_names", nargs=-1)
+def test(test_names: tuple[str]) -> None:
+    """Run the unit tests."""
+    if test_names:
+        tests = unittest.TestLoader().loadTestsFromNames(test_names)
+    else:
+        tests = unittest.TestLoader().discover("tests")
+
+    unittest.TextTestRunner(verbosity=2).run(tests)
