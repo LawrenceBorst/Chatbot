@@ -3,7 +3,10 @@ import click
 from app import create_app, db
 from flask_migrate import Migrate
 from flask import Flask
+from dotenv import load_dotenv
 import unittest
+
+load_dotenv()
 
 app: Flask = create_app(os.getenv("FLASK_CONFIG") or "default")
 migrate: Migrate = Migrate(app, db)

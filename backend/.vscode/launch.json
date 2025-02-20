@@ -9,12 +9,6 @@
       "type": "debugpy",
       "request": "launch",
       "module": "flask",
-      "env": {
-        "FLASK_APP": "main.py",
-        "FLASK_CONFIG": "development",
-        "FLASK_DEBUG": "1",
-        "FLASK_RUN_PORT": "8000"
-      },
       "args": ["run", "--no-debugger", "--no-reload"],
       "jinja": true,
       "autoStartBrowser": false
