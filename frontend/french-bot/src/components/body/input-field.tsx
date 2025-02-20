@@ -13,9 +13,9 @@ export class AppInputField {
 
   render() {
     return (
-      <div>
+      <div id="input-field">
         <form onSubmit={this.onSubmit}>
-          <input type="text" id="text" name="text" />
+          <input type="text" id="text" name="text" autocomplete="off" />
           <br />
           <input type="submit" value="Submit" />
         </form>
@@ -38,7 +38,7 @@ export class AppInputField {
       return;
     }
 
-    this.response.emit(response)
+    this.response.emit(response);
   };
 
   private async makeRequest(text: string): Promise<string | void> {

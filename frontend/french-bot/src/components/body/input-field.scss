@@ -1,3 +1,50 @@
+@import '../../assets/styles/global.scss';
+
 app-input-field {
   padding: 50px;
+}
+
+input[type='text'] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+input[type='text']:focus {
+  outline: none;
+  border: 1px solid #ccc;
+}
+
+input[type='text']:focus {
+  outline: none;
+  border: 1px solid #ccc;
+}
+
+input[type='submit'] {
+  padding: 10px;
+  background-color: $submit-button;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+input[type='submit']:hover {
+  background-color: $submit-button;
+}
+
+input[type='submit']:active {
+  transform: scale(0.95);
+}
+
+#input-field {
+  background-color: #aaa;
+  padding: 10px;
+  border-radius: 10px;
 }
