@@ -13,3 +13,9 @@ To set up the backend, first install dependencies
 ```
 poetry install
 ```
+
+To upgrade the database (this needs to run to create the database)
+
+```
+poetry run flask db upgrade
+```

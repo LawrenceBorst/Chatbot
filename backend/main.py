@@ -3,6 +3,7 @@ import click
 from app import create_app, db
 from flask_migrate import Migrate
 from flask import Flask
+from app.models import User, Message, Conversation
 from dotenv import load_dotenv
 import unittest
 
@@ -17,7 +18,13 @@ def make_shell_context() -> dict:
     """
     This function is used to add additional context to the Flask shell.
     """
-    return dict(db=db)
+    return dict(
+        app=app,
+        db=db,
+        User=User,
+        Message=Message,
+        Conversation=Conversation,
+    )
 
 
 @app.cli.command()
