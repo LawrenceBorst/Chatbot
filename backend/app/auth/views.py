@@ -1,11 +1,11 @@
-from flask import jsonify, request
+from flask import Response, jsonify, make_response, request
 from . import auth
-from flask_login import login_user
+from flask_login import login_required, login_user, current_user, logout_user
 from ..models import User
 
 
 @auth.route("/login", methods=["GET", "POST"])
-def login():
+def login() -> Response:
     password: str = request.args.get("password")
     username: str = request.args.get("username")
 
@@ -17,6 +17,23 @@ def login():
     if user is None or not user.verify_password(password):
         return 400
 
-    login_user(user)
+    login_user(user, remember=True)
 
-    return jsonify({"id": user.id, "name": user.name}), 200
+    response: Response = make_response(jsonify({"id": user.id, "name": user.name}), 200)
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+
+    return response
+
+
+@auth.route("/logout", methods=["GET"])
+@login_required
+def logout() -> Response:
+    logout_user()
+
+    return make_response(jsonify({"message": "Logged out"}), 200)
+
+
+@auth.route("/status", methods=["GET"])
+@login_required
+def auth_status():
+    return jsonify({"id": current_user.id, "name": current_user.name}), 200

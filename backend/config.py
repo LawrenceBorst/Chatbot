@@ -15,6 +15,8 @@ class ConfigType(StrEnum):
 class Config:
     SECRET_KEY: str = os.environ.get("SECRET_KEY")
     SQLALCHEMY_TRACK_MODIFICATIONS: bool = False
+    SESSION_COOKIE_SAMESITE: str = "None"
+    SESSION_COOKIE_SECURE: bool = True
 
     @staticmethod
     def init_app(app) -> None:

@@ -57,7 +57,13 @@ export class LoginScreen {
   private async makeLoginRequest(username: string, password: string): Promise<string | void> {
     const url = `http://127.0.0.1:8000/auth/login?username=${username}&password=${password}`;
 
-    return fetch(url)
+    return fetch(url, {
+      credentials: 'include',
+      method: 'GET',
+      headers: {
+        'Access-Control-Allow-Credentials': 'true',
+      }
+    })
       .then((response: Response) => {
         if (!response.ok) {
           throw new Error(`Response not OK: returned status code ${response.status}`);

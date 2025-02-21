@@ -16,7 +16,7 @@ def create_app(config_name: ConfigType) -> Flask:
 
     db.init_app(app)
     login_manager.init_app(app)
-    CORS(app)
+    CORS(app, supports_credentials=True)
 
     from .main import main as main_blueprint
     from .auth import auth as auth_blueprint

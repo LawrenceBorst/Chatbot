@@ -2,35 +2,51 @@ import { createStore } from '@stencil/store';
 
 const { state } = createStore({
   isAuthenticated: false,
-  token: null,
   user: null,
 });
 
-export function login(token: string, user: any) {
+export function login(user: any) {
   state.isAuthenticated = true;
-  state.token = token;
   state.user = user;
 
-  localStorage.setItem('authToken', token);
   localStorage.setItem('user', JSON.stringify(user));
 }
 
 export function logout() {
   state.isAuthenticated = false;
-  state.token = null;
   state.user = null;
 
-  localStorage.removeItem('authToken');
   localStorage.removeItem('user');
 }
 
+export async function checkAuthStatus(): Promise<Boolean> {
+  const url = `http://127.0.0.1:8000/auth/status`;
+
+  const response = await fetch(url, {
+    method: 'GET',
+    credentials: 'include',
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+
+    state.isAuthenticated = true;
+    state.user = data.user;
+
+    return true;
+  } else {
+    state.isAuthenticated = false;
+    state.user = null;
+
+    return false;
+  }
+}
+
 export function initializeAuth() {
-  const token = localStorage.getItem('authToken');
   const user = localStorage.getItem('user');
 
-  if (token && user) {
+  if (user) {
     state.isAuthenticated = true;
-    state.token = token;
     state.user = JSON.parse(user);
   }
 }
