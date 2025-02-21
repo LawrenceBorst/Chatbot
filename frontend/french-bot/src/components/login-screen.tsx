@@ -1,5 +1,5 @@
 import { Component, h } from '@stencil/core';
-import { login } from '../store/auth-store';
+import { authState } from '../store/auth-store';
 
 @Component({
   tag: 'login-screen',
@@ -35,7 +35,13 @@ export class LoginScreen {
     this.clearInputValue(targetEl, '#username');
     this.clearInputValue(targetEl, '#password');
 
-    login(username, password);
+    const response: string | void = await this.makeLoginRequest(username, password);
+
+    if (!response) {
+      return;
+    }
+
+    authState.isAuthenticated = true;
   };
 
   private getInputData = (form: HTMLFormElement, selector: string): string => {
@@ -47,4 +53,19 @@ export class LoginScreen {
     const inputEl: HTMLInputElement = form.querySelector(selector);
     inputEl.value = '';
   };
+
+  private async makeLoginRequest(username: string, password: string): Promise<string | void> {
+    const url = `http://127.0.0.1:8000/auth/login?username=${username}&password=${password}`;
+
+    return fetch(url)
+      .then((response: Response) => {
+        if (!response.ok) {
+          throw new Error(`Response not OK: returned status code ${response.status}`);
+        }
+        return response.json();
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
 }
