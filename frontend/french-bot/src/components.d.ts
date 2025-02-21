@@ -21,6 +21,8 @@ export namespace Components {
     interface AppTopBar {
         "title": string;
     }
+    interface LoginScreen {
+    }
 }
 export interface AppInputFieldCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -68,12 +70,19 @@ declare global {
         prototype: HTMLAppTopBarElement;
         new (): HTMLAppTopBarElement;
     };
+    interface HTMLLoginScreenElement extends Components.LoginScreen, HTMLStencilElement {
+    }
+    var HTMLLoginScreenElement: {
+        prototype: HTMLLoginScreenElement;
+        new (): HTMLLoginScreenElement;
+    };
     interface HTMLElementTagNameMap {
         "app-body": HTMLAppBodyElement;
         "app-bot-response": HTMLAppBotResponseElement;
         "app-input-field": HTMLAppInputFieldElement;
         "app-root": HTMLAppRootElement;
         "app-top-bar": HTMLAppTopBarElement;
+        "login-screen": HTMLLoginScreenElement;
     }
 }
 declare namespace LocalJSX {
@@ -96,12 +105,15 @@ declare namespace LocalJSX {
     interface AppTopBar {
         "title"?: string;
     }
+    interface LoginScreen {
+    }
     interface IntrinsicElements {
         "app-body": AppBody;
         "app-bot-response": AppBotResponse;
         "app-input-field": AppInputField;
         "app-root": AppRoot;
         "app-top-bar": AppTopBar;
+        "login-screen": LoginScreen;
     }
 }
 export { LocalJSX as JSX };
@@ -113,6 +125,7 @@ declare module "@stencil/core" {
             "app-input-field": LocalJSX.AppInputField & JSXBase.HTMLAttributes<HTMLAppInputFieldElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
             "app-top-bar": LocalJSX.AppTopBar & JSXBase.HTMLAttributes<HTMLAppTopBarElement>;
+            "login-screen": LocalJSX.LoginScreen & JSXBase.HTMLAttributes<HTMLLoginScreenElement>;
         }
     }
 }
