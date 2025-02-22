@@ -35,8 +35,8 @@ class Message(db.Model):
     __tablename__ = "messages"
 
     id = db.Column(db.Integer, primary_key=True)
-    user = db.Column(db.Integer, db.ForeignKey("users.id"))
     conversation = db.Column(db.Integer, db.ForeignKey("conversations.id"))
+    is_user = db.Column(db.Boolean)
     message = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True)
 
@@ -49,6 +49,7 @@ class Conversation(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True, index=True)
+    owner = db.Column(db.Integer, db.ForeignKey("users.id"))
     timestamp = db.Column(db.DateTime, index=True)
 
     def __repr__(self):
