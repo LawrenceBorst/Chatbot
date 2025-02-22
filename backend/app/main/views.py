@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from . import main
 from flask_login import login_required, current_user
-from ..models import Conversation
+from ..models import Conversation, Message
 
 
 @main.route("/process-input", methods=["GET"])
@@ -33,4 +33,34 @@ def conversations():
             "timestamp": conversation.timestamp.isoformat(),
         }
         for conversation in conversations
+    ]
+
+
+@main.route("/conversation", methods=["GET"])
+def conversation():
+    """
+    This endpoint fetches a conversation for a given user
+    """
+    id = request.args.get("id")
+
+    if not id or not id.isdigit():
+        return 400
+
+    id = int(id)
+
+    user_id = Conversation.query.filter_by(id=id).first().owner
+
+    if user_id != current_user.id:
+        return 403
+
+    messages = Message.query.filter_by(conversation=id)
+
+    return [
+        {
+            "id": message.id,
+            "is_user": message.is_user,
+            "message": message.message,
+            "timestamp": message.timestamp.isoformat(),
+        }
+        for message in messages
     ]
