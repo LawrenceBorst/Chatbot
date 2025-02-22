@@ -2,6 +2,8 @@ from flask import request, jsonify
 from . import main
 from flask_login import login_required, current_user
 from ..models import Conversation, Message
+from .random_responses import random_responses
+import random
 
 
 @main.route("/process-input", methods=["GET"])
@@ -15,7 +17,9 @@ def process_input():
     if not text:
         return 400
 
-    return jsonify("Hello World")
+    response: str = random_responses[random.randint(0, len(random_responses) - 1)]
+
+    return jsonify(response)
 
 
 @main.route("/conversations", methods=["GET"])
