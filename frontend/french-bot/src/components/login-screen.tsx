@@ -60,9 +60,6 @@ export class LoginScreen {
     return fetch(url, {
       credentials: 'include',
       method: 'GET',
-      headers: {
-        'Access-Control-Allow-Credentials': 'true',
-      }
     })
       .then((response: Response) => {
         if (!response.ok) {

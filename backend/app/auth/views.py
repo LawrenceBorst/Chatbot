@@ -20,7 +20,6 @@ def login() -> Response:
     login_user(user, remember=True)
 
     response: Response = make_response(jsonify({"id": user.id, "name": user.name}), 200)
-    response.headers["Access-Control-Allow-Credentials"] = "true"
 
     return response
 

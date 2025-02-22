@@ -1,5 +1,5 @@
 import { Component, h } from '@stencil/core';
-import { authState, initializeAuth } from '../store/auth-store';
+import { authState, checkAuthStatus, initializeAuth } from '../store/auth-store';
 
 const HEADER_TITLE: string = 'French Bot';
 
@@ -8,8 +8,12 @@ const HEADER_TITLE: string = 'French Bot';
   styleUrl: 'app-root',
 })
 export class AppRoot {
-  componentWillLoad() {
-    initializeAuth();
+  async componentWillLoad() {
+    const authStatus: Boolean = await checkAuthStatus();
+
+    if (!authStatus) {
+      initializeAuth();
+    }
   }
 
   render() {
