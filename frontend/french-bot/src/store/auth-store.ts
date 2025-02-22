@@ -42,13 +42,4 @@ export async function checkAuthStatus(): Promise<Boolean> {
   }
 }
 
-export function initializeAuth() {
-  const user = localStorage.getItem('user');
-
-  if (user) {
-    state.isAuthenticated = true;
-    state.user = JSON.parse(user);
-  }
-}
-
 export { state as authState };

@@ -18,6 +18,10 @@ export namespace Components {
     }
     interface AppRoot {
     }
+    interface AppSidebar {
+    }
+    interface AppSidebarConversations {
+    }
     interface AppTopBar {
         "title": string;
     }
@@ -64,6 +68,18 @@ declare global {
         prototype: HTMLAppRootElement;
         new (): HTMLAppRootElement;
     };
+    interface HTMLAppSidebarElement extends Components.AppSidebar, HTMLStencilElement {
+    }
+    var HTMLAppSidebarElement: {
+        prototype: HTMLAppSidebarElement;
+        new (): HTMLAppSidebarElement;
+    };
+    interface HTMLAppSidebarConversationsElement extends Components.AppSidebarConversations, HTMLStencilElement {
+    }
+    var HTMLAppSidebarConversationsElement: {
+        prototype: HTMLAppSidebarConversationsElement;
+        new (): HTMLAppSidebarConversationsElement;
+    };
     interface HTMLAppTopBarElement extends Components.AppTopBar, HTMLStencilElement {
     }
     var HTMLAppTopBarElement: {
@@ -81,6 +97,8 @@ declare global {
         "app-bot-response": HTMLAppBotResponseElement;
         "app-input-field": HTMLAppInputFieldElement;
         "app-root": HTMLAppRootElement;
+        "app-sidebar": HTMLAppSidebarElement;
+        "app-sidebar-conversations": HTMLAppSidebarConversationsElement;
         "app-top-bar": HTMLAppTopBarElement;
         "login-screen": HTMLLoginScreenElement;
     }
@@ -102,6 +120,10 @@ declare namespace LocalJSX {
     }
     interface AppRoot {
     }
+    interface AppSidebar {
+    }
+    interface AppSidebarConversations {
+    }
     interface AppTopBar {
         "title"?: string;
     }
@@ -112,6 +134,8 @@ declare namespace LocalJSX {
         "app-bot-response": AppBotResponse;
         "app-input-field": AppInputField;
         "app-root": AppRoot;
+        "app-sidebar": AppSidebar;
+        "app-sidebar-conversations": AppSidebarConversations;
         "app-top-bar": AppTopBar;
         "login-screen": LoginScreen;
     }
@@ -124,6 +148,8 @@ declare module "@stencil/core" {
             "app-bot-response": LocalJSX.AppBotResponse & JSXBase.HTMLAttributes<HTMLAppBotResponseElement>;
             "app-input-field": LocalJSX.AppInputField & JSXBase.HTMLAttributes<HTMLAppInputFieldElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
+            "app-sidebar": LocalJSX.AppSidebar & JSXBase.HTMLAttributes<HTMLAppSidebarElement>;
+            "app-sidebar-conversations": LocalJSX.AppSidebarConversations & JSXBase.HTMLAttributes<HTMLAppSidebarConversationsElement>;
             "app-top-bar": LocalJSX.AppTopBar & JSXBase.HTMLAttributes<HTMLAppTopBarElement>;
             "login-screen": LocalJSX.LoginScreen & JSXBase.HTMLAttributes<HTMLLoginScreenElement>;
         }

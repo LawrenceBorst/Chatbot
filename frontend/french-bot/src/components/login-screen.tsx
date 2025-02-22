@@ -3,7 +3,7 @@ import { authState } from '../store/auth-store';
 
 @Component({
   tag: 'login-screen',
-  styleUrl: 'login-screen',
+  styleUrl: 'login-screen.scss',
 })
 export class LoginScreen {
   render() {
