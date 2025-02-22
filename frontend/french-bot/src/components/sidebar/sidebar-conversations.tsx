@@ -12,7 +12,7 @@ export class AppSideBarConversations {
   }
 
   private getListItem = (convo: ConversationSummary) => {
-    if (convo.id == convoState.activeConversation?.id) {
+    if (convo.id == convoState.activeConversation) {
       return <li class="active">{convo.name}</li>;
     }
 

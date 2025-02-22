@@ -10,7 +10,7 @@ export interface ConversationSummary {
 
 export interface Message {
   id: number;
-  text: string;
+  message: string;
+  is_user: boolean;
   timestamp: Date;
-  sender: string;
 }

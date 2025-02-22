@@ -5,5 +5,14 @@ app-bot-response {
 #response-box {
   min-height: 200px;
   border: 2px;
-  border-color: red;
+}
+
+#response-box p.user {
+  padding: 0 0 0 20%;
+  text-align: right;
+}
+
+#response-box p.bot {
+  padding: 0 20% 0 0;
+  text-align: left;
 }

@@ -1,5 +1,6 @@
 import { Component, h, State } from '@stencil/core';
 import { AppInputFieldCustomEvent } from '../../components';
+import { convoState } from '../../store/convo-store';
 
 @Component({
   tag: 'app-body',
@@ -15,7 +16,7 @@ export class AppBody {
   public render() {
     return (
       <div id="dialog-container">
-        <app-bot-response text={this.response}/>
+        <app-bot-response conversationId={convoState.activeConversation} />
         <app-input-field onResponse={this.handleResponse} />
       </div>
     );

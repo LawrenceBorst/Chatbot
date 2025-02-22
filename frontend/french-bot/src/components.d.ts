@@ -9,10 +9,7 @@ export namespace Components {
     interface AppBody {
     }
     interface AppBotResponse {
-        /**
-          * Text to add to the dialog
-         */
-        "text": string;
+        "conversationId": number | null;
     }
     interface AppInputField {
     }
@@ -107,10 +104,7 @@ declare namespace LocalJSX {
     interface AppBody {
     }
     interface AppBotResponse {
-        /**
-          * Text to add to the dialog
-         */
-        "text"?: string;
+        "conversationId"?: number | null;
     }
     interface AppInputField {
         /**
