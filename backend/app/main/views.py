@@ -40,22 +40,13 @@ def conversations():
     ]
 
 
-@main.route("/conversation", methods=["GET"])
+@main.route("/conversations/<int:id>", methods=["GET"])
 @login_required
-def conversation():
+def conversation(id: int):
     """
     This endpoint fetches a conversation for a given user
     """
-    id = request.args.get("id")
-
-    if not id or not id.isdigit():
-        return 400
-
-    id = int(id)
-
-    user_id = Conversation.query.filter_by(id=id).first().owner
-
-    if user_id != current_user.id:
+    if not _is_resource_owner(id):
         return 403
 
     messages = Message.query.filter_by(conversation=id)
@@ -69,3 +60,9 @@ def conversation():
         }
         for message in messages
     ]
+
+
+def _is_resource_owner(convo_id: int) -> bool:
+    owner_id: str = Conversation.query.filter_by(id=convo_id).first().owner
+
+    return owner_id == current_user.id

@@ -23,7 +23,7 @@ export async function getConversations(): Promise<ConversationSummary[]> {
 }
 
 export async function getConversation(conservationId: number): Promise<Conversation> {
-  const url = `http://127.0.0.1:8000/conversation?id=${conservationId}`;
+  const url = `http://127.0.0.1:8000/conversations/${conservationId}`;
 
   const res = await fetch(url, { method: 'GET', credentials: 'include' });
   if (!res.ok) {
