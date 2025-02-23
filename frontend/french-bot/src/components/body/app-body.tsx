@@ -1,5 +1,5 @@
 import { Component, h, State } from '@stencil/core';
-import { convoState } from '../../store/convo-store';
+import { convoState, getConversations } from '../../store/convo-store';
 
 @Component({
   tag: 'app-body',
@@ -43,7 +43,15 @@ export class AppBody {
   };
 
   private async makeRequestToBot(message: string): Promise<string | void> {
-    const url = `http://127.0.0.1:8000/conversations/${convoState.activeConversation}?message=${message}`;
+    const newConvo: Boolean = convoState.activeConversation === null;
+
+    let convoId: number | null = convoState.activeConversation;
+
+    if (newConvo) {
+      convoId = (await this.createNewConversation(message)).id;
+    }
+
+    const url = `http://127.0.0.1:8000/conversations/${convoId}?message=${message}`;
 
     return fetch(url, {
       credentials: 'include',
@@ -53,10 +61,27 @@ export class AppBody {
         if (!response.ok) {
           throw new Error(`Response not OK: returned status code ${response.status}`);
         }
+
+        if (newConvo) {
+          convoState.activeConversation = convoId;
+          getConversations();
+        }
+
         return response.json();
       })
       .catch(error => {
         console.error(error);
       });
+  }
+
+  private async createNewConversation(message: string): Promise<{ id: number }> {
+    const url = `http://127.0.0.1:8000/conversations?name=${message}`;
+
+    const res = await fetch(url, { method: 'POST', credentials: 'include' });
+    if (!res.ok) {
+      return;
+    }
+
+    return res.json();
   }
 }
