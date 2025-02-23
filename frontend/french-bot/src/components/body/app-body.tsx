@@ -1,5 +1,4 @@
 import { Component, h, State } from '@stencil/core';
-import { AppInputFieldCustomEvent } from '../../components';
 import { convoState } from '../../store/convo-store';
 
 @Component({
@@ -31,7 +30,7 @@ export class AppBody {
       isUser: true,
     };
 
-    const response: string | void = await this.makeRequest(event.detail);
+    const response: string | void = await this.makeRequestToBot(event.detail);
 
     if (!response) {
       return;
@@ -41,13 +40,14 @@ export class AppBody {
       text: response,
       isUser: false,
     };
-  }
+  };
 
-  private async makeRequest(text: string): Promise<string | void> {
-    const url = `http://127.0.0.1:8000/process-input?text=${text}`;
+  private async makeRequestToBot(message: string): Promise<string | void> {
+    const url = `http://127.0.0.1:8000/conversations/${convoState.activeConversation}?message=${message}`;
 
     return fetch(url, {
       credentials: 'include',
+      method: 'POST',
     })
       .then((response: Response) => {
         if (!response.ok) {

@@ -4,22 +4,8 @@ from flask_login import login_required, current_user
 from ..models import Conversation, Message
 from .random_responses import random_responses
 import random
-
-
-@main.route("/process-input", methods=["GET"])
-@login_required
-def process_input():
-    """
-    This endpoint processes input from the user to the chatbot
-    and returns a response.
-    """
-    text: str = request.args.get("text")
-    if not text:
-        return 400
-
-    response: str = random_responses[random.randint(0, len(random_responses) - 1)]
-
-    return jsonify(response)
+from .. import db
+from datetime import datetime
 
 
 @main.route("/conversations", methods=["GET"])
@@ -60,6 +46,41 @@ def conversation(id: int):
         }
         for message in messages
     ]
+
+
+@main.route("/conversations/<int:id>", methods=["POST"])
+@login_required
+def conversation_post(id: int):
+    """
+    This endpoint posts a message to a conversation
+    """
+    if not _is_resource_owner(id):
+        return 403
+
+    message: str = request.args.get("message")
+
+    if not message:
+        return 400
+
+    user_message: Message = Message(
+        conversation=id, is_user=True, message=message, timestamp=_get_current_time()
+    )
+    db.session.add(user_message)
+
+    response: str = random_responses[random.randint(0, len(random_responses) - 1)]
+
+    bot_message: Message = Message(
+        conversation=id, is_user=False, message=response, timestamp=_get_current_time()
+    )
+    db.session.add(bot_message)
+
+    db.session.commit()
+
+    return jsonify(response)
+
+
+def _get_current_time() -> datetime:
+    return datetime.today()
 
 
 def _is_resource_owner(convo_id: int) -> bool:
