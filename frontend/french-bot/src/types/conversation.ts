@@ -3,14 +3,19 @@ export type Conversation = ConversationSummary & {
 };
 
 export interface ConversationSummary {
-  id: number;
-  name: string;
+  id: number | null;
+  name: string | null;
   timestamp: Date;
 }
 
 export interface Message {
   id: number;
-  message: string;
-  is_user: boolean;
+  message: string | null;
+  isUser: boolean;
   timestamp: Date;
+}
+
+export interface ChatResponse {
+  text: string;
+  isUser: boolean;
 }

@@ -30,8 +30,8 @@ export async function getConversation(conservationId: number): Promise<Conversat
     return;
   }
 
-  const conversation: Message[] = (await res.json()).map((message: { id: number; message: string; is_user: boolean; timestamp: Date }) => {
-    return { ...message, timestamp: new Date(message.timestamp) };
+  const conversation: Message[] = (await res.json()).map((message: { id: number; message: string; is_user: boolean; timestamp: string }): Message => {
+    return { id: message.id, message: message.message, isUser: message.is_user, timestamp: new Date(message.timestamp) };
   });
 
   return { ...state.conversations[state.activeConversation], messages: conversation };

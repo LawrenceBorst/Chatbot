@@ -9,7 +9,7 @@ export class AppInputField {
    * Emitted when a response to the query is received from the server
    */
   @Event()
-  public response: EventEmitter<string>;
+  public userResponse: EventEmitter<string>;
 
   render() {
     return (
@@ -32,29 +32,6 @@ export class AppInputField {
     const text: string = inputEl.value;
     inputEl.value = '';
 
-    const response: string | void = await this.makeRequest(text);
-
-    if (!response) {
-      return;
-    }
-
-    this.response.emit(response);
+    this.userResponse.emit(text);
   };
-
-  private async makeRequest(text: string): Promise<string | void> {
-    const url = `http://127.0.0.1:8000/process-input?text=${text}`;
-
-    return fetch(url, {
-      credentials: 'include',
-    })
-      .then((response: Response) => {
-        if (!response.ok) {
-          throw new Error(`Response not OK: returned status code ${response.status}`);
-        }
-        return response.json();
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }
 }

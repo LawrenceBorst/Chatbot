@@ -5,11 +5,20 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { ChatResponse } from "./types/conversation";
+export { ChatResponse } from "./types/conversation";
 export namespace Components {
     interface AppBody {
     }
     interface AppBotResponse {
+        /**
+          * The id of the current conversation
+         */
         "conversationId": number | null;
+        /**
+          * The response passed either from the user or the bot
+         */
+        "lastResponse": ChatResponse;
     }
     interface AppInputField {
     }
@@ -43,7 +52,7 @@ declare global {
         new (): HTMLAppBotResponseElement;
     };
     interface HTMLAppInputFieldElementEventMap {
-        "response": string;
+        "userResponse": string;
     }
     interface HTMLAppInputFieldElement extends Components.AppInputField, HTMLStencilElement {
         addEventListener<K extends keyof HTMLAppInputFieldElementEventMap>(type: K, listener: (this: HTMLAppInputFieldElement, ev: AppInputFieldCustomEvent<HTMLAppInputFieldElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -104,13 +113,20 @@ declare namespace LocalJSX {
     interface AppBody {
     }
     interface AppBotResponse {
+        /**
+          * The id of the current conversation
+         */
         "conversationId"?: number | null;
+        /**
+          * The response passed either from the user or the bot
+         */
+        "lastResponse"?: ChatResponse;
     }
     interface AppInputField {
         /**
           * Emitted when a response to the query is received from the server
          */
-        "onResponse"?: (event: AppInputFieldCustomEvent<string>) => void;
+        "onUserResponse"?: (event: AppInputFieldCustomEvent<string>) => void;
     }
     interface AppRoot {
     }

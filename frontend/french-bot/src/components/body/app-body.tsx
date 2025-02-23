@@ -11,20 +11,52 @@ export class AppBody {
    * The response passed to the bot response
    */
   @State()
-  public response: string;
+  public lastResponse: {
+    text: string;
+    isUser: boolean;
+  };
 
   public render() {
     return (
       <div id="dialog-container">
-        <app-bot-response conversationId={convoState.activeConversation} />
-        <app-input-field onResponse={this.handleResponse} />
+        <app-bot-response conversationId={convoState.activeConversation} lastResponse={this.lastResponse} />
+        <app-input-field onUserResponse={this.handleUserResponse} />
       </div>
     );
   }
 
-  private handleResponse = (event: AppInputFieldCustomEvent<string>) => {
-    event.stopPropagation();
+  private handleUserResponse = async (event: CustomEvent<string>) => {
+    this.lastResponse = {
+      text: event.detail,
+      isUser: true,
+    };
 
-    this.response = event.detail;
-  };
+    const response: string | void = await this.makeRequest(event.detail);
+
+    if (!response) {
+      return;
+    }
+
+    this.lastResponse = {
+      text: response,
+      isUser: false,
+    };
+  }
+
+  private async makeRequest(text: string): Promise<string | void> {
+    const url = `http://127.0.0.1:8000/process-input?text=${text}`;
+
+    return fetch(url, {
+      credentials: 'include',
+    })
+      .then((response: Response) => {
+        if (!response.ok) {
+          throw new Error(`Response not OK: returned status code ${response.status}`);
+        }
+        return response.json();
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
 }
