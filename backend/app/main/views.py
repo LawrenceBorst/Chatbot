@@ -41,6 +41,7 @@ def conversations():
 
 
 @main.route("/conversation", methods=["GET"])
+@login_required
 def conversation():
     """
     This endpoint fetches a conversation for a given user
