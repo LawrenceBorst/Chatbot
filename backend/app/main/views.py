@@ -26,6 +26,27 @@ def conversations():
     ]
 
 
+@main.route("/conversations", methods=["POST"])
+@login_required
+def conversations_post():
+    """
+    This endpoint creates/starts a new conversation for a given user
+    """
+    name: str = request.args.get("name")
+
+    if not name:
+        return 400
+
+    conversation: Conversation = Conversation(
+        owner=current_user.id, name=name, timestamp=_get_current_time()
+    )
+    db.session.add(conversation)
+
+    db.session.commit()
+
+    return jsonify({"id": conversation.id})
+
+
 @main.route("/conversations/<int:id>", methods=["GET"])
 @login_required
 def conversation(id: int):
