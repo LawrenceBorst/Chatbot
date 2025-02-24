@@ -1,7 +1,74 @@
 from flask import Response, jsonify, make_response, request
+from itsdangerous import BadSignature, SignatureExpired
+from app.email import send_email
+from sqlalchemy import or_
 from . import auth
 from flask_login import login_required, login_user, current_user, logout_user
 from ..models import User
+from .. import serializer, db
+
+
+@auth.route("/register", methods=["GET", "POST"])
+def register():
+    password: str = request.args.get("password")
+    username: str = request.args.get("username")
+    email: str = request.args.get("email")
+
+    if None in [password, username, email]:
+        return 400
+
+    user_exists: bool = (
+        User.query.filter(or_(User.name == username, User.email == email)).first()
+        is not None
+    )
+
+    if user_exists:
+        return 400
+
+    user: User = User(
+        name=username,
+        email=email,
+        password=password,
+        confirmed=False,
+    )
+
+    db.session.add(user)
+    db.session.commit()
+
+    token = serializer.dumps(user.email, salt="email-confirm")
+
+    send_email(
+        user.email,
+        "Confirm Your Account",
+        "email/confirm",
+        user=user,
+        token=token,
+    )
+
+    return jsonify("Email sent"), 200
+
+
+@auth.route(
+    "/email/confirm/<token>",
+)
+def confirm_email(token: str):
+    email: str
+
+    try:
+        email = serializer.loads(token, salt="email-confirm", max_age=3600)
+    except (SignatureExpired, BadSignature):
+        return "Invalid or expired token", 400
+
+    user: User = User.query.filter_by(email=email).first()
+
+    if user is None:
+        return "User not found", 401
+
+    user.confirmed = True
+
+    db.session.commit()
+
+    return "Email confirmed", 200
 
 
 @auth.route("/login", methods=["GET", "POST"])
@@ -14,7 +81,7 @@ def login() -> Response:
 
     user: User = User.query.filter_by(name=username).first()
 
-    if user is None or not user.verify_password(password):
+    if user is None or not user.verify_password(password) or not user.confirmed:
         return 400
 
     login_user(user, remember=True)

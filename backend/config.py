@@ -17,6 +17,13 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS: bool = False
     SESSION_COOKIE_SAMESITE: str = "None"
     SESSION_COOKIE_SECURE: bool = True
+    MAIL_SERVER: str = "smtp.googlemail.com"
+    MAIL_PORT: int = 587
+    MAIL_USE_TLS: bool = True
+    MAIL_USERNAME: str = os.environ.get("MAIL_USERNAME")
+    MAIL_PASSWORD: str = os.environ.get("MAIL_PASSWORD")
+    MAIL_SUBJECT_PREFIX: str = '[Lawrence Borst Chatbot]'
+    MAIL_SENDER: str = 'Lawrence Borst Chatbot <lawrenceborstchatbot@gmail.com>'
 
     @staticmethod
     def init_app(app) -> None:
