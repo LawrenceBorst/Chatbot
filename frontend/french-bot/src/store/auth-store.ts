@@ -21,17 +21,23 @@ export function logout() {
 
 export async function checkAuthStatus(): Promise<Boolean> {
   const url = `http://127.0.0.1:8000/auth/status`;
+  let response: Response;
 
-  const response = await fetch(url, {
-    method: 'GET',
-    credentials: 'include',
-  });
+  try {
+    response = await fetch(url, {
+      method: 'GET',
+      credentials: 'include',
+    });
+  } catch (error) {}
 
-  if (response.ok) {
-    const data = await response.json();
+  const data: {
+    id: null | number;
+    name: null | string;
+  } = await response.json();
 
+  if (data.id !== null && data.name !== null) {
     state.isAuthenticated = true;
-    state.user = data.user;
+    state.user = data.id;
 
     return true;
   } else {

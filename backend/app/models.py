@@ -10,6 +10,7 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(64), unique=True, index=True)
     email = db.Column(db.String(64), unique=True)
     password_hash = db.Column(db.String(128))
+    confirmed = db.Column(db.Boolean, default=False)
 
     @property
     def password(self):
@@ -17,7 +18,7 @@ class User(UserMixin, db.Model):
 
     @password.setter
     def password(self, password):
-        self.password = generate_password_hash(password)
+        self.password_hash = generate_password_hash(password)
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)

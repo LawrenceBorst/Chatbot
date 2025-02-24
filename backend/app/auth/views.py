@@ -33,6 +33,8 @@ def logout() -> Response:
 
 
 @auth.route("/status", methods=["GET"])
-@login_required
 def auth_status():
+    if not current_user.is_authenticated:
+        return jsonify({"id": None, "name": None}), 200
+
     return jsonify({"id": current_user.id, "name": current_user.name}), 200
