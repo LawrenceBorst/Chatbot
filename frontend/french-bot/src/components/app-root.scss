@@ -2,15 +2,17 @@ app-root {
   display: flex;
   flex-direction: column;
   height: 100vh;
-}
 
+  font-family: 'Roboto', sans-serif;
+}
 
 #main-container {
   display: flex;
   height: 100%;
 }
 
-app-body, login-screen {
+app-body,
+login-screen {
   flex-grow: 1;
   overflow: auto;
 }
