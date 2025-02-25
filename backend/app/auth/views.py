@@ -4,7 +4,7 @@ from app.email import send_email
 from sqlalchemy import or_
 from . import auth
 from flask_login import login_required, login_user, current_user, logout_user
-from ..models import User
+from ..models import Conversation, User, Message
 from .. import serializer, db
 
 
@@ -69,6 +69,36 @@ def confirm_email(token: str):
     db.session.commit()
 
     return "Email confirmed", 200
+
+
+@auth.route("/delete", methods=["GET", "POST"])
+@login_required
+def delete() -> Response:
+    """
+    This endpoint deletes an account and all associated data
+    """
+    Message.query.filter(
+        Message.conversation.in_(
+            db.session.query(Conversation.id).filter_by(owner=current_user.id)
+        )
+    ).delete(synchronize_session=False)
+
+    Conversation.query.filter_by(owner=current_user.id).delete(
+        synchronize_session=False
+    )
+
+    User.query.filter_by(name=current_user.name).delete(synchronize_session=False)
+
+    db.session.commit()
+
+    return make_response(
+        jsonify(
+            {
+                "message": "All accounts and associated data with the current user's name have been deleted"
+            }
+        ),
+        200,
+    )
 
 
 @auth.route("/login", methods=["GET", "POST"])
