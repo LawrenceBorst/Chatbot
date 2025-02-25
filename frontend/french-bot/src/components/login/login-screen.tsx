@@ -4,6 +4,7 @@ import { LoginForm } from './login-form';
 import { RegisterForm } from './register-form';
 import { LoginButtons } from './login-buttons';
 import { FormState } from './types';
+import { getConversations } from '../../store/convo-store';
 
 @Component({
   tag: 'login-screen',
@@ -48,6 +49,7 @@ export class LoginScreen {
     }
 
     authState.isAuthenticated = true;
+    getConversations();
   };
 
   private onSubmitSignUp = async (event: SubmitEvent): Promise<void> => {
