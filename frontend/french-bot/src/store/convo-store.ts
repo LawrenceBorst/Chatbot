@@ -6,6 +6,11 @@ const { state } = createStore<{ conversations: ConversationSummary[]; activeConv
   activeConversation: null,
 });
 
+export function resetStore(): void {
+  state.conversations = [];
+  state.activeConversation = null;
+}
+
 export async function getConversations(): Promise<ConversationSummary[]> {
   const url = `http://127.0.0.1:8000/conversations`;
 

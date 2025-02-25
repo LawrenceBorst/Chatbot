@@ -1,7 +1,5 @@
-import { Component, h, JSX } from '@stencil/core';
+import { Component, h } from '@stencil/core';
 import { authState, checkAuthStatus } from '../store/auth-store';
-import { getConversations } from '../store/convo-store';
-import { ConversationSummary } from '../types/conversation';
 
 const HEADER_TITLE: string = 'French Bot';
 
@@ -10,30 +8,27 @@ const HEADER_TITLE: string = 'French Bot';
   styleUrl: 'app-root.scss',
 })
 export class AppRoot {
-  async componentWillLoad() {
-    const authStatus: Boolean = await checkAuthStatus();
-    let conversations: ConversationSummary[];
-
-    if (authStatus) {
-      conversations = await getConversations();
-    }
+  componentWillLoad() {
+    checkAuthStatus();
   }
 
   render() {
-    let page: JSX.Element;
-
     if (authState.isAuthenticated) {
-      page = <app-body />;
+      return [
+        <app-top-bar title={HEADER_TITLE} />,
+        <div id="main-container">
+          <app-sidebar />
+          <app-body />
+        </div>,
+      ];
     } else {
-      page = <login-screen />;
+      return [
+        <app-top-bar title={HEADER_TITLE} />,
+        <div id="main-container">
+          <app-sidebar />
+          <login-screen />
+        </div>,
+      ];
     }
-
-    return [
-      <app-top-bar title={HEADER_TITLE} />,
-      <div id="main-container">
-        <app-sidebar />
-        {page}
-      </div>,
-    ];
   }
 }

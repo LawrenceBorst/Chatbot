@@ -1,10 +1,9 @@
 import { Component, FunctionalComponent, h, State } from '@stencil/core';
-import { authState } from '../../store/auth-store';
+import { login } from '../../store/auth-store';
 import { LoginForm } from './login-form';
 import { RegisterForm } from './register-form';
 import { LoginButtons } from './login-buttons';
-import { FormState } from './types';
-import { getConversations } from '../../store/convo-store';
+import { FormState, LoginResponse } from './types';
 
 @Component({
   tag: 'login-screen',
@@ -42,14 +41,13 @@ export class LoginScreen {
     this.clearInputValue(targetEl, '#username');
     this.clearInputValue(targetEl, '#password');
 
-    const response: string | void = await this.makeLoginRequest(username, password);
+    const response: LoginResponse | void = await this.makeLoginRequest(username, password);
 
     if (!response) {
       return;
     }
 
-    authState.isAuthenticated = true;
-    getConversations();
+    login(response.id);
   };
 
   private onSubmitSignUp = async (event: SubmitEvent): Promise<void> => {
@@ -70,8 +68,6 @@ export class LoginScreen {
     if (!response) {
       return;
     }
-
-    authState.isAuthenticated = true;
   };
 
   private onClick =
@@ -97,7 +93,7 @@ export class LoginScreen {
     inputEl.value = '';
   };
 
-  private async makeLoginRequest(username: string, password: string): Promise<string | void> {
+  private async makeLoginRequest(username: string, password: string): Promise<LoginResponse | void> {
     const url = `http://127.0.0.1:8000/auth/login?username=${username}&password=${password}`;
 
     return fetch(url, {
@@ -108,7 +104,7 @@ export class LoginScreen {
         if (!response.ok) {
           throw new Error(`Response not OK: returned status code ${response.status}`);
         }
-        return response.json();
+        return response.json() as Promise<{ id: number; name: string }>;
       })
       .catch(error => {
         console.error(error);
