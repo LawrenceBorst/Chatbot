@@ -5,9 +5,10 @@ from sqlalchemy import or_
 from . import auth
 from flask_login import login_required, login_user, current_user, logout_user
 from ..models import Conversation, User, Message
-from .. import serializer, db
+from .. import serializer, db, limiter
 
 
+@limiter.limit("3 per hour")
 @auth.route("/register", methods=["GET", "POST"])
 def register():
     password: str = request.args.get("password")
@@ -48,6 +49,7 @@ def register():
     return jsonify("Email sent"), 200
 
 
+@limiter.limit("3 per hour")
 @auth.route(
     "/email/confirm/<token>",
 )
@@ -71,6 +73,7 @@ def confirm_email(token: str):
     return "Email confirmed", 200
 
 
+@limiter.limit("3 per hour")
 @auth.route("/delete", methods=["GET", "POST"])
 @login_required
 def delete() -> Response:
@@ -101,6 +104,7 @@ def delete() -> Response:
     )
 
 
+@limiter.limit("5 per minute; 10 per hour; 20 per day")
 @auth.route("/login", methods=["GET", "POST"])
 def login() -> Response:
     password: str = request.args.get("password")
@@ -121,6 +125,7 @@ def login() -> Response:
     return response
 
 
+@limiter.limit("100 per hour")
 @auth.route("/logout", methods=["GET"])
 @login_required
 def logout() -> Response:

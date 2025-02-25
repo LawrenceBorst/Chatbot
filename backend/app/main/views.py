@@ -4,10 +4,11 @@ from flask_login import login_required, current_user
 from ..models import Conversation, Message
 from .random_responses import random_responses
 import random
-from .. import db
+from .. import db, limiter
 from datetime import datetime
 
 
+@limiter.limit("10 per minute")
 @main.route("/conversations", methods=["GET"])
 @login_required
 def conversations():
@@ -25,7 +26,7 @@ def conversations():
         for conversation in conversations
     ]
 
-
+@limiter.limit("10 per minute")
 @main.route("/conversations", methods=["POST"])
 @login_required
 def conversations_post():
@@ -47,6 +48,7 @@ def conversations_post():
     return jsonify({"id": conversation.id})
 
 
+@limiter.limit("10 per minute")
 @main.route("/conversations/<int:id>", methods=["GET"])
 @login_required
 def conversation(id: int):
@@ -69,6 +71,7 @@ def conversation(id: int):
     ]
 
 
+@limiter.limit("10 per minute")
 @main.route("/conversations/<int:id>", methods=["POST"])
 @login_required
 def conversation_post(id: int):
