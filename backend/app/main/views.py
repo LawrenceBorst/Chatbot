@@ -49,9 +49,9 @@ def conversations_post():
 
 
 @limiter.limit("10 per minute")
-@main.route("/conversations/<int:id>", methods=["GET"])
+@main.route("/conversations/<id>", methods=["GET"])
 @login_required
-def conversation(id: int):
+def conversation(id: str):
     """
     This endpoint fetches a conversation for a given user
     """
@@ -72,9 +72,9 @@ def conversation(id: int):
 
 
 @limiter.limit("10 per minute")
-@main.route("/conversations/<int:id>", methods=["POST"])
+@main.route("/conversations/<id>", methods=["POST"])
 @login_required
-def conversation_post(id: int):
+def conversation_post(id: str):
     """
     This endpoint posts a message to a conversation
     """
@@ -107,7 +107,7 @@ def _get_current_time() -> datetime:
     return datetime.today()
 
 
-def _is_resource_owner(convo_id: int) -> bool:
+def _is_resource_owner(convo_id: str) -> bool:
     owner_id: str = Conversation.query.filter_by(id=convo_id).first().owner
 
     return owner_id == current_user.id

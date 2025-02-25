@@ -20,7 +20,7 @@ export class AppSideBarConversations {
   };
 
   private handleClick =
-    (convoId: number) =>
+    (convoId: string) =>
     (event: PointerEvent): void => {
       event.preventDefault();
       event.stopPropagation();

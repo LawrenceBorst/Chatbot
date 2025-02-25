@@ -3,13 +3,13 @@ export type Conversation = ConversationSummary & {
 };
 
 export interface ConversationSummary {
-  id: number | null;
+  id: string | null;
   name: string | null;
   timestamp: Date;
 }
 
 export interface Message {
-  id: number;
+  id: string;
   message: string | null;
   isUser: boolean;
   timestamp: Date;

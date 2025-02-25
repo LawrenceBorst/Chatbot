@@ -11,7 +11,7 @@ export class AppBotResponse {
    * The id of the current conversation
    */
   @Prop()
-  public conversationId: number | null;
+  public conversationId: string | null;
 
   /**
    * The response passed either from the user or the bot
@@ -32,7 +32,7 @@ export class AppBotResponse {
   private activeConversation: Conversation | null = null;
 
   @Watch('conversationId')
-  async conversationIdChanged(newConversationId: number | null) {
+  async conversationIdChanged(newConversationId: string | null) {
     if (newConversationId !== null) {
       this.conversation = await getConversation(newConversationId);
       this.activeConversation = null;

@@ -45,7 +45,7 @@ export class AppBody {
   private async makeRequestToBot(message: string): Promise<string | void> {
     const newConvo: Boolean = convoState.activeConversation === null;
 
-    let convoId: number | null = convoState.activeConversation;
+    let convoId: string | null = convoState.activeConversation;
 
     if (newConvo) {
       convoId = (await this.createNewConversation(message)).id;
@@ -74,7 +74,7 @@ export class AppBody {
       });
   }
 
-  private async createNewConversation(message: string): Promise<{ id: number }> {
+  private async createNewConversation(message: string): Promise<{ id: string }> {
     const url = `http://127.0.0.1:8000/conversations?name=${message}`;
 
     const res = await fetch(url, { method: 'POST', credentials: 'include' });

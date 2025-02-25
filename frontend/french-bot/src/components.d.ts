@@ -14,7 +14,7 @@ export namespace Components {
         /**
           * The id of the current conversation
          */
-        "conversationId": number | null;
+        "conversationId": string | null;
         /**
           * The response passed either from the user or the bot
          */
@@ -116,7 +116,7 @@ declare namespace LocalJSX {
         /**
           * The id of the current conversation
          */
-        "conversationId"?: number | null;
+        "conversationId"?: string | null;
         /**
           * The response passed either from the user or the bot
          */

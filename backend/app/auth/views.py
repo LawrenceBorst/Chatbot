@@ -104,7 +104,7 @@ def delete() -> Response:
     )
 
 
-@limiter.limit("5 per minute; 10 per hour; 20 per day")
+@limiter.limit("5 per minute; 60 per hour; 20 per day")
 @auth.route("/login", methods=["GET", "POST"])
 def login() -> Response:
     password: str = request.args.get("password")
@@ -133,7 +133,7 @@ def logout() -> Response:
 
     return make_response(jsonify({"message": "Logged out"}), 200)
 
-
+@limiter.limit("10 per minute")
 @auth.route("/status", methods=["GET"])
 def auth_status():
     if not current_user.is_authenticated:
